@@ -8,11 +8,30 @@
 #include "A.h"
 #include "systems.h"
 #include "scheduler.h"
+#include "A_exported_functions.h"
+
 
 SYSTEM_RAM	PCB_t 		process[MAX_PROCESS];
 SYSTEM_RAM	Asys_t		Asys;
 SYSTEM_RAM	MEMpool_t	MEMpool[POOL_NUM];
 SYSTEM_RAM	HWMngr_t	HWMngr[PERIPHERAL_NUM];
+
+A_IpAddr_t	A_IpAddr =
+{
+		.IP_ADDR0 		= 192,
+		.IP_ADDR1 		= 168,
+		.IP_ADDR2		= 10,
+		.IP_ADDR3 		= 220,
+		.NETMASK_ADDR0	= 255,
+		.NETMASK_ADDR1 	= 255,
+		.NETMASK_ADDR2 	= 255,
+		.NETMASK_ADDR3 	= 0,
+		.GW_ADDR0 		= 192,
+		.GW_ADDR1 		= 168,
+		.GW_ADDR2 		= 10,
+		.GW_ADDR3 		= 1
+};
+A_IpAddr_t	A_DhcpIpAddr;
 
 uint32_t	UsbDeviceId0 = 0xdeadbeef;
 uint32_t	UsbDeviceId1 = 0xbeefdead;
@@ -77,8 +96,18 @@ void A_init_mem(void)
 	A_bzero((uint8_t *)(SCHED_STACK_START-SIZE_TASK_STACK),SIZE_TASK_STACK*MAX_PROCESS);
 }
 
+void A_InitIpAddress(void)
+{
+	A_bzero((uint8_t *)&Asys,sizeof(Asys));
+	A_bzero((uint8_t *)HWMngr,sizeof(HWMngr));
+	A_bzero((uint8_t *)process,sizeof(process));
+	A_bzero((uint8_t *)(SCHED_STACK_START-SIZE_TASK_STACK),SIZE_TASK_STACK*MAX_PROCESS);
+}
+
 void A_start(void)
 {
+	A_InitIpAddress();
+	MX_LWIP_Init(&A_IpAddr);
 	MX_USB_Device_Init();
 	__disable_irq();
 	HAL_NVIC_SetPriority(PendSV_IRQn,  PendSV_PRIORITY, 0);		/* Make PendSV_IRQn lower priority */
@@ -87,7 +116,7 @@ void A_start(void)
 	init_scheduler_stack(SCHED_STACK_START);
 	init_processes_stacks();
 	init_systick_timer(TICK_HZ);
-	mem_init();
+	A_mem_init();
 	switch_sp_to_psp();
 
 	__enable_irq();

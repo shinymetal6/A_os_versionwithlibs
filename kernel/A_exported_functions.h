@@ -107,4 +107,6 @@ extern	uint32_t set_usb_rx_buffer(uint8_t *rx_buf);
 #define	DEVICE_SPI2					HW_SPI2
 #define	DEVICE_USB					HW_USB
 
+
+
 #endif /* KERNEL_A_EXPORTED_FUNCTIONS_H_ */

@@ -15,9 +15,13 @@
 extern	PCB_t 		process[MAX_PROCESS];
 extern	Asys_t		Asys;
 
+extern	__IO uint32_t uwTick;
+
 void update_global_tick_count(void)
 {
 	Asys.g_tick_count++;
+	// update the HAL timer, if someone need it
+	uwTick++;
 }
 
 void task_delay(uint32_t tick_count)
@@ -31,7 +35,6 @@ void task_delay(uint32_t tick_count)
 	}
 	__enable_irq();
 }
-
 
 void unblock_tasks(void)
 {

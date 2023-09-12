@@ -62,11 +62,28 @@ typedef struct
 	uint32_t	system_flags;
 	uint8_t		failed_process;
 	uint8_t		fail_rsn;
+	uint8_t		lwip_state;
+	uint8_t		IP_ADDR[4],NETMASK_ADDR[4],GW_ADDR[4];
 }Asys_t;
 
 /* system_flags */
 #define	SYS_MEM_DEFRAG_REQUEST	0x00000001
 
+typedef struct
+{
+	uint8_t		IP_ADDR0;
+	uint8_t		IP_ADDR1;
+	uint8_t		IP_ADDR2;
+	uint8_t		IP_ADDR3;
+	uint8_t		NETMASK_ADDR0;
+	uint8_t		NETMASK_ADDR1;
+	uint8_t		NETMASK_ADDR2;
+	uint8_t		NETMASK_ADDR3;
+	uint8_t		GW_ADDR0;
+	uint8_t		GW_ADDR1;
+	uint8_t		GW_ADDR2;
+	uint8_t		GW_ADDR3;
+}A_IpAddr_t;
 
 extern	void A_bzero(uint8_t *ptr,uint16_t count);
 extern	void A_memcpy(uint8_t *dest,uint8_t *source,uint16_t size);
@@ -74,7 +91,7 @@ extern	void schedule(void);
 extern	void mem_init(void);
 extern	void defrag_mem(void);
 extern	void MX_USB_Device_Init(void);
-
+extern	void MX_LWIP_Init(A_IpAddr_t *A_IpAddr);
 
 extern	void supervisor(void);
 extern	void process_1(void);

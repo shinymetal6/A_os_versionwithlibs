@@ -13,7 +13,7 @@
 extern	MEMpool_t	MEMpool[POOL_NUM];
 extern	Asys_t		Asys;
 
-void mem_init(void)
+void A_mem_init(void)
 {
 uint32_t	i;
 uint8_t		*mem_ptr;

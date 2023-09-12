@@ -32,6 +32,10 @@ void update_next_task(void)
 	{
 		Asys.current_process++;
 		Asys.current_process %= MAX_TASKS;
+		/******************************************************************/
+		if ( Asys.current_process == 0 )
+			return;
+		/******************************************************************/
 		state = process[Asys.current_process].current_state;
 		if( (state == PROCESS_READY_STATE) && (Asys.current_process != 0) )
 			break;

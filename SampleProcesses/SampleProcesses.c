@@ -75,6 +75,6 @@ void process_4(void)
 	create_timer(TIMER_ID_0,800,TIMERFLAGS_FOREVER );
 	while(1)
 	{
-
+		wait_event(EVENT_TIMER);
 	}
 }

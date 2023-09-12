@@ -119,6 +119,7 @@ int vprintf_(const char* format, va_list va);
  */
 int fctprintf(void (*out)(char character, void* arg), void* arg, const char* format, ...);
 
+unsigned int strlen(char *ptr);
 
 #ifdef __cplusplus
 }

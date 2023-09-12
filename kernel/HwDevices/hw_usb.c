@@ -30,7 +30,7 @@ uint8_t	*dest_ptr = HWMngr[HW_USB].rx_buf;
 	if ( dest_ptr != NULL )
 	{
 		HWMngr[HW_USB].rxlen = Len;
-		memcpy(dest_ptr,Buf,Len);
+		A_memcpy(dest_ptr,Buf,Len);
 		dest_ptr[Len] = 0;
 		activate_process(HWMngr[HW_USB].process,WAKEUP_FROM_USB_IRQ,HW_USB_RX_COMPLETE_FLAG);
 		return	Len;
@@ -48,7 +48,7 @@ uint32_t send_usb(uint8_t* ptr, uint16_t len)
 {
 	if (( HWMngr[HW_USB].process == Asys.current_process ) && ( len != 0 ))
 	{
-		//return (uint32_t )CDC_Transmit_FS(ptr, len);
+		return (uint32_t )CDC_Transmit_FS(ptr, len);
 	}
 	return 0xffffffff;
 }

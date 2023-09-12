@@ -920,3 +920,8 @@ int fctprintf(void (*out)(char character, void* arg), void* arg, const char* for
   va_end(va);
   return ret;
 }
+
+unsigned int strlen(char *ptr)
+{
+	return _strnlen_s(ptr, 512);
+}

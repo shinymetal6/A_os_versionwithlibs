@@ -38,6 +38,9 @@ extern	uint32_t create_timer(uint8_t timer_id,uint32_t tick_count,uint8_t flags)
 #define	TIMERFLAGS_DISABLED			0x00
 #define	TIMERFLAGS_USERMASK			0x0f
 
+/* hwmanager */
+extern	uint32_t allocate_hw(uint32_t peripheral);
+
 /* hwmanager : usb */
 extern	uint32_t send_usb(uint8_t* ptr, uint16_t len);
 extern	uint32_t set_usb_rx_buffer(uint8_t *rx_buf);

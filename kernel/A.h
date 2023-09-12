@@ -73,6 +73,8 @@ extern	void A_memcpy(uint8_t *dest,uint8_t *source,uint16_t size);
 extern	void schedule(void);
 extern	void mem_init(void);
 extern	void defrag_mem(void);
+extern	void MX_USB_Device_Init(void);
+
 
 extern	void supervisor(void);
 extern	void process_1(void);

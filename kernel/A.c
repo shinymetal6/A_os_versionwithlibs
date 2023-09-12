@@ -14,6 +14,9 @@ SYSTEM_RAM	Asys_t		Asys;
 SYSTEM_RAM	MEMpool_t	MEMpool[POOL_NUM];
 SYSTEM_RAM	HWMngr_t	HWMngr[PERIPHERAL_NUM];
 
+uint32_t	UsbDeviceId0 = 0xdeadbeef;
+uint32_t	UsbDeviceId1 = 0xbeefdead;
+
 __attribute__((naked)) void init_scheduler_stack(uint32_t sched_top_of_stack)
 {
      __set_MSP(sched_top_of_stack);
@@ -76,6 +79,7 @@ void A_init_mem(void)
 
 void A_start(void)
 {
+	MX_USB_Device_Init();
 	__disable_irq();
 	HAL_NVIC_SetPriority(PendSV_IRQn,  PendSV_PRIORITY, 0);		/* Make PendSV_IRQn lower priority */
 	HAL_NVIC_SetPriority(SysTick_IRQn, SysTick_PRIORITY, 0);	/* Make PendSV_IRQn lower priority */

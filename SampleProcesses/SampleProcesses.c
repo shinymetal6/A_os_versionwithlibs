@@ -21,7 +21,9 @@ uint32_t	wakeup;
 		if (( wakeup & WAKEUP_FROM_TIMER) == WAKEUP_FROM_TIMER)
 		{
 			ptr1 = mem_get(512);
+#ifdef	STM32H563xx
 			HAL_GPIO_TogglePin(LED1_GREEN_GPIO_Port, LED1_GREEN_Pin);
+#endif
 			mem_release(ptr1);
 		}
 	}
@@ -42,8 +44,10 @@ uint32_t	wakeup;
 				mem_release(ptr1);
 			ptr1 = mem_get(512);
 			sprintf((char *) ptr1, "Printf is running\n\r");
+#ifdef	STM32H563xx
 			HAL_GPIO_TogglePin(LED2_YELLOW_GPIO_Port, LED2_YELLOW_Pin);
-		}
+#endif
+			}
 	}
 }
 
@@ -59,7 +63,9 @@ uint32_t	wakeup,msg=0;
 		wakeup = wait_event(EVENT_TIMER);
 		if (( wakeup & WAKEUP_FROM_TIMER) == WAKEUP_FROM_TIMER)
 		{
+#ifdef	STM32H563xx
 			HAL_GPIO_TogglePin(LED3_RED_GPIO_Port, LED3_RED_Pin);
+#endif
 			if ( ptr1 != NULL )
 				mem_release(ptr1);
 			ptr1 = mem_get(512);

@@ -18,8 +18,9 @@ void supervisor(void)
 	{
 		if ( Asys.num_buf_in_use == 0 )
 			defrag_mem();
-
+#ifdef	LWIP_ENABLED
 		MX_LWIP_Process();
+#endif
 	}
 }
 

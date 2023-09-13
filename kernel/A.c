@@ -52,10 +52,10 @@ uint32_t *pPSP,i,j;
 	process[4].current_state = PROCESS_READY_STATE;
 
 	process[0].psp_value = IDLE_STACK_START;
-	process[1].psp_value = T1_STACK_START;
-	process[2].psp_value = T2_STACK_START;
-	process[3].psp_value = T3_STACK_START;
-	process[4].psp_value = T4_STACK_START;
+	process[1].psp_value = P1_STACK_START;
+	process[2].psp_value = P2_STACK_START;
+	process[3].psp_value = P3_STACK_START;
+	process[4].psp_value = P4_STACK_START;
 
 	process[0].task_handler = supervisor;
 	process[1].task_handler = process_1;
@@ -93,7 +93,7 @@ void A_init_mem(void)
 	A_bzero((uint8_t *)&Asys,sizeof(Asys));
 	A_bzero((uint8_t *)HWMngr,sizeof(HWMngr));
 	A_bzero((uint8_t *)process,sizeof(process));
-	A_bzero((uint8_t *)(SCHED_STACK_START-SIZE_TASK_STACK),SIZE_TASK_STACK*MAX_PROCESS);
+	A_bzero((uint8_t *)(SCHED_STACK_START-SIZE_PROCESS_STACK),SIZE_PROCESS_STACK*MAX_PROCESS);
 }
 
 void A_InitIpAddress(void)
@@ -101,14 +101,20 @@ void A_InitIpAddress(void)
 	A_bzero((uint8_t *)&Asys,sizeof(Asys));
 	A_bzero((uint8_t *)HWMngr,sizeof(HWMngr));
 	A_bzero((uint8_t *)process,sizeof(process));
-	A_bzero((uint8_t *)(SCHED_STACK_START-SIZE_TASK_STACK),SIZE_TASK_STACK*MAX_PROCESS);
+	A_bzero((uint8_t *)(SCHED_STACK_START-SIZE_PROCESS_STACK),SIZE_PROCESS_STACK*MAX_PROCESS);
 }
 
 void A_start(void)
 {
+#ifdef	LWIP_ENABLED
 	A_InitIpAddress();
 	MX_LWIP_Init(&A_IpAddr);
-	MX_USB_Device_Init();
+#endif
+#ifdef	USBDEV_ENABLED
+#ifndef	STM32F746xx
+	MX_USB_DEVICE_Init();
+#endif
+#endif
 	__disable_irq();
 	HAL_NVIC_SetPriority(PendSV_IRQn,  PendSV_PRIORITY, 0);		/* Make PendSV_IRQn lower priority */
 	HAL_NVIC_SetPriority(SysTick_IRQn, SysTick_PRIORITY, 0);	/* Make PendSV_IRQn lower priority */

@@ -27,8 +27,8 @@
 #endif
 
 /* Includes ------------------------------------------------------------------*/
-#include "stm32h5xx.h"
-#include "stm32h5xx_hal.h"
+#include "stm32f7xx.h"
+#include "stm32f7xx_hal.h"
 #include "usbd_def.h"
 
 void MX_USB_Device_Init(void);

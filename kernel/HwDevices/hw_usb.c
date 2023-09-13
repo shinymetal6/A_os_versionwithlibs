@@ -42,13 +42,21 @@ void UsbControlCallback(uint8_t cmd, uint8_t* pbuf, uint16_t length)
 {
 }
 
+#ifdef USBDEV_IS_FS
 extern	uint8_t CDC_Transmit_FS(uint8_t* Buf, uint16_t Len);
+#else
+extern	uint8_t CDC_Transmit_HS(uint8_t* Buf, uint16_t Len);
+#endif
 
 uint32_t send_usb(uint8_t* ptr, uint16_t len)
 {
 	if (( HWMngr[HW_USB].process == Asys.current_process ) && ( len != 0 ))
 	{
+#ifdef USBDEV_IS_FS
 		return (uint32_t )CDC_Transmit_FS(ptr, len);
+#else
+		return (uint32_t )CDC_Transmit_HS(ptr, len);
+#endif
 	}
 	return 0xffffffff;
 }

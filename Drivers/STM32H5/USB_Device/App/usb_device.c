@@ -13,7 +13,7 @@ extern USBD_DescriptorsTypeDef HID_Desc;
 extern	USBD_CDC_ItfTypeDef USBD_Interface_fops_FS;
 extern	USBD_DescriptorsTypeDef CDC_Desc;
 
-void MX_USB_Device_Init(void)
+void MX_USB_DEVICE_Init(void)
 {
   /* Init Device Library, add supported class and start the library. */
   if (USBD_Init(&hUsbDeviceFS, &CDC_Desc, 0) != USBD_OK)

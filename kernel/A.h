@@ -14,8 +14,6 @@
 #define	MAILBOX_NUM				8
 #define	PERIPHERAL_NUM			32
 
-
-
 #define DUMMY_XPSR  				0x01000000U
 
 typedef struct
@@ -91,7 +89,7 @@ extern	void A_memcpy(uint8_t *dest,uint8_t *source,uint16_t size);
 extern	void schedule(void);
 extern	void mem_init(void);
 extern	void defrag_mem(void);
-extern	void MX_USB_Device_Init(void);
+extern	void MX_USB_DEVICE_Init(void);
 extern	void MX_LWIP_Init(A_IpAddr_t *A_IpAddr);
 
 extern	void supervisor(void);

@@ -10,6 +10,8 @@
 #include "systems.h"
 #include "scheduler.h"
 
+extern	void MX_LWIP_Process(void);
+
 void supervisor(void)
 {
 	while(1)

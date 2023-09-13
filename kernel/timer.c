@@ -46,22 +46,25 @@ register uint8_t	i,j;
 		{
 			for( j = 0 ; j < MAX_TIMERS ; j++)
 			{
-				if((process[i].timer_flags[j] & TIMERFLAGS_ENABLED ) == TIMERFLAGS_ENABLED)
+				if((process[i].timer_flags[j] & TIMERFLAGS_IN_USE ) == TIMERFLAGS_IN_USE)
 				{
-					if(process[i].current_timer[j] == Asys.g_tick_count)
+					if((process[i].timer_flags[j] & TIMERFLAGS_ENABLED ) == TIMERFLAGS_ENABLED)
 					{
-						process[i].current_state = PROCESS_READY_STATE;
-						if ((process[i].timer_flags[j] & TIMERFLAGS_FOREVER ) == TIMERFLAGS_FOREVER)
+						if(process[i].current_timer[j] == Asys.g_tick_count)
 						{
-							process[i].current_timer[j] = Asys.g_tick_count + process[i].timer_value[j];
+							process[i].current_state = PROCESS_READY_STATE;
+							if ((process[i].timer_flags[j] & TIMERFLAGS_FOREVER ) == TIMERFLAGS_FOREVER)
+							{
+								process[i].current_timer[j] = Asys.g_tick_count + process[i].timer_value[j];
+							}
+							process[i].timer_expired |= (1<<j);
+							process[i].wakeup_rsn |= WAKEUP_FROM_TIMER;
+							process[i].wakeup_flags = j;
 						}
-						process[i].timer_expired |= (1<<j);
-						process[i].wakeup_rsn |= WAKEUP_FROM_TIMER;
-						process[i].wakeup_flags = j;
 					}
+					else
+						process[i].current_timer[j]++;
 				}
-				else
-					process[i].current_timer[j]++;
 			}
 		}
 	}
@@ -125,18 +128,23 @@ uint8_t timer_index = 0;
 	return 0;
 }
 
+uint32_t restart_timer(uint8_t timer_id,uint32_t tick_count,uint8_t flags)
+{
+	if (( process[Asys.current_process].timer_flags[timer_id] & TIMERFLAGS_IN_USE ) != TIMERFLAGS_IN_USE)
+		return 1;
+	process[Asys.current_process].timer_flags[timer_id] &= ~TIMERFLAGS_IN_USE;
+	create_timer(timer_id,tick_count,flags);
+	return 0;
+}
+
 uint32_t stop_timer(uint8_t timer_id)
 {
-	if (( process[Asys.current_process].timer_flags[timer_id] & TIMERFLAGS_IN_USE ) == TIMERFLAGS_IN_USE)
-		return 1;
 	process[Asys.current_process].timer_flags[timer_id] &= ~TIMERFLAGS_ENABLED;
 	return 0;
 }
 
 uint32_t destroy_timer(uint8_t timer_id)
 {
-	if (( process[Asys.current_process].timer_flags[timer_id] & TIMERFLAGS_IN_USE ) != TIMERFLAGS_IN_USE)
-		return 1;
 	__disable_irq();
 	process[Asys.current_process].timer_flags[timer_id] = 0;
 	__enable_irq();

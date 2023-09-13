@@ -26,6 +26,7 @@ typedef struct
 	uint8_t		chunk_count;
 	uint8_t		chunk_index;
 	uint8_t		process;
+	uint8_t		unused;
 	uint8_t		flags;
 }MEMpool_t;
 

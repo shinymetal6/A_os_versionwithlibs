@@ -11,9 +11,9 @@
 #include "A_exported_functions.h"
 
 
-SYSTEM_RAM	PCB_t 		process[MAX_PROCESS];
-SYSTEM_RAM	Asys_t		Asys;
 SYSTEM_RAM	MEMpool_t	MEMpool[POOL_NUM];
+SYSTEM_RAM 	PCB_t 		process[MAX_PROCESS];
+SYSTEM_RAM	Asys_t		Asys;
 SYSTEM_RAM	HWMngr_t	HWMngr[PERIPHERAL_NUM];
 
 A_IpAddr_t	A_IpAddr =

@@ -19,6 +19,12 @@ extern	uint32_t mem_release(uint8_t *data_ptr);
 /* timer */
 extern	void task_delay(uint32_t tick_count);
 extern	uint32_t create_timer(uint8_t timer_id,uint32_t tick_count,uint8_t flags);
+extern	uint32_t start_timer(uint8_t timer_id);
+extern	uint32_t restart_timer(uint8_t timer_id,uint32_t tick_count,uint8_t flags);
+extern	uint32_t stop_timer(uint8_t timer_id);
+extern	uint32_t destroy_timer(uint8_t timer_id);
+extern	uint8_t get_timer_expired(void);
+
 
 /* timer id */
 #define	TIMER_ID_0		0x01

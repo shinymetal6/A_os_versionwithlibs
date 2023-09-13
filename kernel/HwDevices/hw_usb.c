@@ -10,6 +10,7 @@
 #include "../scheduler.h"
 #include "../A_exported_functions.h"
 #include "../hwmanager.h"
+#include "../systems.h"
 
 extern	HWMngr_t	HWMngr[PERIPHERAL_NUM];
 extern	Asys_t		Asys;
@@ -42,20 +43,24 @@ void UsbControlCallback(uint8_t cmd, uint8_t* pbuf, uint16_t length)
 {
 }
 
-#ifdef USBDEV_IS_FS
-extern	uint8_t CDC_Transmit_FS(uint8_t* Buf, uint16_t Len);
-#else
-extern	uint8_t CDC_Transmit_HS(uint8_t* Buf, uint16_t Len);
+#if defined USBDEV_ENABLED
+	#ifdef USBDEV_IS_FS
+		extern	uint8_t CDC_Transmit_FS(uint8_t* Buf, uint16_t Len);
+	#else
+		extern	uint8_t CDC_Transmit_HS(uint8_t* Buf, uint16_t Len);
+	#endif
 #endif
 
 uint32_t send_usb(uint8_t* ptr, uint16_t len)
 {
 	if (( HWMngr[HW_USB].process == Asys.current_process ) && ( len != 0 ))
 	{
-#ifdef USBDEV_IS_FS
+#if defined USBDEV_ENABLED
+	#ifdef USBDEV_IS_FS
 		return (uint32_t )CDC_Transmit_FS(ptr, len);
-#else
+	#else
 		return (uint32_t )CDC_Transmit_HS(ptr, len);
+	#endif
 #endif
 	}
 	return 0xffffffff;

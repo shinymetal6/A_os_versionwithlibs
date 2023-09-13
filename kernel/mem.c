@@ -35,7 +35,7 @@ MEMpool_t	*p = MEMpool;
 	p[i-1].nxt_link = 0;
 }
 
-void find_orphaned_chunks(uint8_t process)
+void reset_orphaned_chunks(uint8_t process)
 {
 MEMpool_t	*p = MEMpool;
 uint32_t	i;

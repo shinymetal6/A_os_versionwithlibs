@@ -26,7 +26,7 @@ void save_psp_value(uint32_t current_psp_value)
 
 void update_next_task(void)
 {
-	int state = PROCESS_BLOCKED_STATE;
+	int state = 0;
 
 	for(int i= 0 ; i < (MAX_TASKS) ; i++)
 	{
@@ -37,10 +37,13 @@ void update_next_task(void)
 			return;
 		/******************************************************************/
 		state = process[Asys.current_process].current_state;
-		if( (state == PROCESS_READY_STATE) && (Asys.current_process != 0) )
-			break;
+		if (( state & PROCESS_KILLED_STATE ) != PROCESS_KILLED_STATE)
+		{
+			if( ((state & PROCESS_READY_STATE )== PROCESS_READY_STATE) && (Asys.current_process != 0) )
+				break;
+		}
 	}
-	if(state != PROCESS_READY_STATE)
+	if((state & PROCESS_READY_STATE ) != PROCESS_READY_STATE)
 		Asys.current_process = 0;
 }
 
@@ -93,7 +96,7 @@ uint32_t __attribute__ ((noinline)) wait_event(uint32_t events)
 uint32_t wake;
 	__disable_irq();
 	process[Asys.current_process].wait_event = events;
-	process[Asys.current_process].current_state = PROCESS_BLOCKED_STATE;
+	process[Asys.current_process].current_state &= ~PROCESS_READY_STATE;
 	schedule();
 	wake = process[Asys.current_process].wakeup_rsn;
 	process[Asys.current_process].wakeup_rsn = 0;
@@ -101,13 +104,18 @@ uint32_t wake;
 	return wake;
 }
 
+
 uint32_t inline activate_process(uint8_t dest_process,uint32_t rsn , uint32_t flags)
 {
-	__disable_irq();
-	process[dest_process].wakeup_rsn |= rsn;
-	process[dest_process].wakeup_flags |= flags;
-	process[dest_process].current_state = PROCESS_READY_STATE;
-	__enable_irq();
+	if (( process[dest_process].current_state & PROCESS_KILLED_STATE ) != PROCESS_KILLED_STATE)
+	{
+		__disable_irq();
+		process[dest_process].wakeup_rsn |= rsn;
+		process[dest_process].wakeup_flags |= flags;
+		process[dest_process].current_state = 0;
+		process[dest_process].current_state |= PROCESS_READY_STATE;
+		__enable_irq();
+	}
 	return 0;
 }
 

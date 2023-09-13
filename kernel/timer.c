@@ -30,7 +30,7 @@ void task_delay(uint32_t tick_count)
 	if(Asys.current_process)
 	{
 		process[Asys.current_process].block_count = Asys.g_tick_count + tick_count;
-		process[Asys.current_process].current_state = PROCESS_BLOCKED_STATE;
+		process[Asys.current_process].current_state &= ~PROCESS_READY_STATE;
 		schedule();
 	}
 	__enable_irq();
@@ -52,14 +52,13 @@ register uint8_t	i,j;
 					{
 						if(process[i].current_timer[j] == Asys.g_tick_count)
 						{
-							process[i].current_state = PROCESS_READY_STATE;
+							process[i].current_state |= PROCESS_READY_STATE;
 							if ((process[i].timer_flags[j] & TIMERFLAGS_FOREVER ) == TIMERFLAGS_FOREVER)
 							{
 								process[i].current_timer[j] = Asys.g_tick_count + process[i].timer_value[j];
 							}
 							process[i].timer_expired |= (1<<j);
-							process[i].wakeup_rsn |= WAKEUP_FROM_TIMER;
-							process[i].wakeup_flags = j;
+							activate_process(i,WAKEUP_FROM_TIMER,j);
 						}
 					}
 					else

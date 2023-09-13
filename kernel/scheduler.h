@@ -37,8 +37,15 @@ typedef struct
 #define	TIMERFLAGS_USERMASK			0x0f
 
 #define MAX_TASKS   5
-#define PROCESS_READY_STATE  0x00
-#define PROCESS_BLOCKED_STATE  0XFF
+/* the following is a nonsense, it's here just to clarify that a process with bit 0 @ 0 is waiting */
+#define PROCESS_WAITING_STATE		0x00
+#define PROCESS_READY_STATE			0x01
+#define PROCESS_USAGEFAULT_FLAG		0X04
+#define PROCESS_BUSFAULT_FLAG		0X08
+#define PROCESS_MEMMANAGE_FLAG		0X10
+#define PROCESS_HARDFAULT_FLAG		0X20
+#define PROCESS_FINISHED_FLAG		0X40
+#define PROCESS_KILLED_STATE		0X80
 
 extern	void unblock_tasks(void);
 extern	void switch_sp_to_psp(void);

@@ -59,13 +59,17 @@
 #define	LED_3_GPIOBIT			LED2_YELLOW_Pin
 
 #define TICK_HZ 				1000U
-#define HSI_CLOCK         		160000000U
+#define HSI_CLOCK         		250000000U
 #define SYSTICK_TIM_CLK   		HSI_CLOCK
 
 //#define	LWIP_ENABLED			1
-#define	USBDEV_ENABLED			1
-#define	USBDEV_IS_FS			1
+//#define	USBDEV_ENABLED			1
+//#define	USBDEV_IS_FS			1
 //#define	USBHOST_ENABLED			1
+#define	NFC		1
+#if defined NFC
+#define ST25R3916B
+#endif
 
 #define	PendSV_PRIORITY			15
 #define	SysTick_PRIORITY		14

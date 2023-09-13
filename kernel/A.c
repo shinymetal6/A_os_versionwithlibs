@@ -10,11 +10,12 @@
 #include "scheduler.h"
 #include "A_exported_functions.h"
 
-
 SYSTEM_RAM	MEMpool_t	MEMpool[POOL_NUM];
 SYSTEM_RAM 	PCB_t 		process[MAX_PROCESS];
 SYSTEM_RAM	Asys_t		Asys;
 SYSTEM_RAM	HWMngr_t	HWMngr[PERIPHERAL_NUM];
+
+extern	USRprcs_t	UserProcesses[USR_PROCESS_NUMBER];
 
 A_IpAddr_t	A_IpAddr =
 {
@@ -58,10 +59,10 @@ uint32_t *pPSP,i,j;
 	process[4].psp_value = P4_STACK_START;
 
 	process[0].task_handler = supervisor;
-	process[1].task_handler = process_1;
-	process[2].task_handler = process_2;
-	process[3].task_handler = process_3;
-	process[4].task_handler = process_4;
+	process[1].task_handler = supervisor_process1;
+	process[2].task_handler = supervisor_process2;
+	process[3].task_handler = supervisor_process3;
+	process[4].task_handler = supervisor_process4;
 
 	for(i = 0 ; i < MAX_TASKS ;i++)
 	{
@@ -104,6 +105,13 @@ void A_InitIpAddress(void)
 	A_bzero((uint8_t *)(SCHED_STACK_START-SIZE_PROCESS_STACK),SIZE_PROCESS_STACK*MAX_PROCESS);
 }
 
+void A_enable_processor_faults(void)
+{
+	SCB->SHCSR |= SCB_SHCSR_MEMFAULTENA_Msk;
+	SCB->SHCSR |= SCB_SHCSR_BUSFAULTENA_Msk;
+	SCB->SHCSR |= SCB_SHCSR_USGFAULTENA_Msk;
+}
+
 void A_start(void)
 {
 #ifdef	LWIP_ENABLED
@@ -118,6 +126,7 @@ void A_start(void)
 	__disable_irq();
 	HAL_NVIC_SetPriority(PendSV_IRQn,  PendSV_PRIORITY, 0);		/* Make PendSV_IRQn lower priority */
 	HAL_NVIC_SetPriority(SysTick_IRQn, SysTick_PRIORITY, 0);	/* Make PendSV_IRQn lower priority */
+	A_enable_processor_faults();
 
 	init_scheduler_stack(SCHED_STACK_START);
 	init_processes_stacks();

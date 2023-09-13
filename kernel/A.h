@@ -9,7 +9,7 @@
 #define KERNEL_A_H_
 
 #define MAX_PROCESS				5
-#define USR_PROCESS				(MAX_PROCESS-1)
+#define USR_PROCESS_NUMBER		(MAX_PROCESS-1)
 #define MAX_TIMERS				8
 #define	MAILBOX_NUM				8
 #define	PERIPHERAL_NUM			32
@@ -63,10 +63,22 @@ typedef struct
 	uint8_t		fail_rsn;
 	uint8_t		lwip_state;
 	uint8_t		IP_ADDR[4],NETMASK_ADDR[4],GW_ADDR[4];
+	uint8_t		process_hard_fault[MAX_PROCESS];
+	uint8_t		process_bus_fault[MAX_PROCESS];
+	uint8_t		process_mem_manage_fault[MAX_PROCESS];
+	uint8_t		process_usage_fault[MAX_PROCESS];
 }Asys_t;
 
 /* system_flags */
 #define	SYS_MEM_DEFRAG_REQUEST	0x00000001
+
+/* user processes */
+typedef struct
+{
+	void 		(*user_process)(uint32_t);
+	uint16_t	stack_size;
+	uint16_t	process_number;
+}USRprcs_t;
 
 typedef struct
 {
@@ -87,16 +99,17 @@ typedef struct
 extern	void A_bzero(uint8_t *ptr,uint16_t count);
 extern	void A_memcpy(uint8_t *dest,uint8_t *source,uint16_t size);
 extern	void schedule(void);
-extern	void mem_init(void);
+extern	void A_mem_init(void);
 extern	void defrag_mem(void);
+extern	void reset_orphaned_chunks(uint8_t process);
 extern	void MX_USB_DEVICE_Init(void);
 extern	void MX_LWIP_Init(A_IpAddr_t *A_IpAddr);
 
 extern	void supervisor(void);
-extern	void process_1(void);
-extern	void process_2(void);
-extern	void process_3(void);
-extern	void process_4(void);
+extern	void supervisor_process1(void);
+extern	void supervisor_process2(void);
+extern	void supervisor_process3(void);
+extern	void supervisor_process4(void);
 
 extern	Asys_t		Asys;
 

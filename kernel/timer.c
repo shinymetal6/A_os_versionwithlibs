@@ -24,6 +24,45 @@ void update_global_tick_count(void)
 	uwTick++;
 }
 
+int32_t A_GetTick(void)
+{
+	return Asys.g_tick_count;
+}
+
+/*
+uint32_t HAL_GetTick(void)
+{
+  return Asys.g_tick_count;
+}
+
+void HAL_Delay(uint32_t tick_count)
+{
+uint32_t tickstart = HAL_GetTick();
+uint32_t wait = tick_count;
+
+	if ( Asys.g_os_started == 0 )
+	{
+		// Add a freq to guarantee minimum wait
+		if (wait < HAL_MAX_DELAY)
+		{
+		wait += (uint32_t)(uwTickFreq);
+		}
+
+		while ((HAL_GetTick() - tickstart) < wait)
+		{
+		}
+	}
+	else
+	{
+		__disable_irq();
+		process[Asys.current_process].delay_value = Asys.g_tick_count + tick_count;
+		if ( Asys.current_process )	// supervisor is constantly enabled
+			process[Asys.current_process].wait_event = SUSPEND_ON_DELAY;
+		suspend();
+		__enable_irq();
+	}
+}
+*/
 void task_delay(uint32_t tick_count)
 {
 	__disable_irq();
@@ -31,6 +70,7 @@ void task_delay(uint32_t tick_count)
 	{
 		process[Asys.current_process].block_count = Asys.g_tick_count + tick_count;
 		process[Asys.current_process].current_state &= ~PROCESS_READY_STATE;
+		process[Asys.current_process].wait_event = SUSPEND_ON_DELAY;
 		schedule();
 	}
 	__enable_irq();
@@ -42,6 +82,12 @@ register uint8_t	i,j;
 
 	for( i = 1 ; i < MAX_PROCESS ; i++)
 	{
+		if((process[i].wait_event & SUSPEND_ON_DELAY) == SUSPEND_ON_DELAY)
+		{
+			if(Asys.g_tick_count >= process[i].delay_value)
+				process[i].current_state |= PROCESS_READY_STATE;
+		}
+
 		if((process[i].wait_event & SUSPEND_ON_TIMER) == SUSPEND_ON_TIMER)
 		{
 			for( j = 0 ; j < MAX_TIMERS ; j++)
@@ -50,13 +96,11 @@ register uint8_t	i,j;
 				{
 					if((process[i].timer_flags[j] & TIMERFLAGS_ENABLED ) == TIMERFLAGS_ENABLED)
 					{
-						if(process[i].current_timer[j] == Asys.g_tick_count)
+						if(Asys.g_tick_count >= process[i].current_timer[j] )
 						{
 							process[i].current_state |= PROCESS_READY_STATE;
 							if ((process[i].timer_flags[j] & TIMERFLAGS_FOREVER ) == TIMERFLAGS_FOREVER)
-							{
 								process[i].current_timer[j] = Asys.g_tick_count + process[i].timer_value[j];
-							}
 							process[i].timer_expired |= (1<<j);
 							activate_process(i,WAKEUP_FROM_TIMER,j);
 						}
@@ -68,6 +112,7 @@ register uint8_t	i,j;
 		}
 	}
 }
+
 void  SysTick_Handler(void)
 {
 	if ( Asys.g_os_started )

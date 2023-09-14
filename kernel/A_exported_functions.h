@@ -11,6 +11,8 @@
 /* System */
 extern	uint32_t wait_event(uint32_t events);
 extern	uint8_t get_current_process(void);
+extern	void A_TimeDebug_High(void);
+extern	void A_TimeDebug_Low(void);
 
 /* Memory */
 extern	uint8_t *mem_get(uint32_t size );
@@ -24,6 +26,10 @@ extern	uint32_t restart_timer(uint8_t timer_id,uint32_t tick_count,uint8_t flags
 extern	uint32_t stop_timer(uint8_t timer_id);
 extern	uint32_t destroy_timer(uint8_t timer_id);
 extern	uint8_t get_timer_expired(void);
+extern	int32_t A_GetTick(void);
+
+/* compatibility */
+extern	void 	A_Error_Handler(char * file, int line);
 
 
 /* timer id */
@@ -48,8 +54,12 @@ extern	uint8_t get_timer_expired(void);
 extern	uint32_t allocate_hw(uint32_t peripheral);
 
 /* hwmanager : usb */
-extern	uint32_t send_usb(uint8_t* ptr, uint16_t len);
-extern	uint32_t set_usb_rx_buffer(uint8_t *rx_buf);
+extern	uint32_t hw_send_usb(uint8_t* ptr, uint16_t len);
+extern	uint32_t hw_set_usb_rx_buffer(uint8_t *rx_buf);
+
+/* support functions */
+extern	void A_memcpy(uint8_t *dest,uint8_t *source,uint16_t size);
+
 
 /* peripherals */
 #define	HW_DELAY					0

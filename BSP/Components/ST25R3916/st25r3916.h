@@ -25,8 +25,9 @@
 * INCLUDES
 ******************************************************************************
 */
-#include "platform.h"
+#include "../../platform.h"
 #include "st_errno.h"
+
 #include "st25r3916_com.h"
 
 /*

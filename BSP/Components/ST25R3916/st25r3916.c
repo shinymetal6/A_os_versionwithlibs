@@ -27,7 +27,6 @@
 #include "st25r3916_led.h"
 #include "st25r3916_irq.h"
 #include "utils.h"
-#include "../../../kernel/systems.h"
 
 
 

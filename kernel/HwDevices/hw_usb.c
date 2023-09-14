@@ -15,7 +15,7 @@
 extern	HWMngr_t	HWMngr[PERIPHERAL_NUM];
 extern	Asys_t		Asys;
 
-uint32_t	set_usb_rx_buffer(uint8_t *rx_buf)
+uint32_t hw_set_usb_rx_buffer(uint8_t *rx_buf)
 {
 	if ( HWMngr[HW_USB].process == Asys.current_process )
 	{
@@ -25,7 +25,7 @@ uint32_t	set_usb_rx_buffer(uint8_t *rx_buf)
 	return 255;
 }
 
-uint32_t UsbPktReceived(uint8_t* Buf, uint32_t Len)
+uint32_t hw_UsbPktReceived(uint8_t* Buf, uint32_t Len)
 {
 uint8_t	*dest_ptr = HWMngr[HW_USB].rx_buf;
 	if ( dest_ptr != NULL )
@@ -39,7 +39,7 @@ uint8_t	*dest_ptr = HWMngr[HW_USB].rx_buf;
 	return 0;
 }
 
-void UsbControlCallback(uint8_t cmd, uint8_t* pbuf, uint16_t length)
+void hw_UsbControlCallback(uint8_t cmd, uint8_t* pbuf, uint16_t length)
 {
 }
 
@@ -51,7 +51,7 @@ void UsbControlCallback(uint8_t cmd, uint8_t* pbuf, uint16_t length)
 	#endif
 #endif
 
-uint32_t send_usb(uint8_t* ptr, uint16_t len)
+uint32_t hw_send_usb(uint8_t* ptr, uint16_t len)
 {
 	if (( HWMngr[HW_USB].process == Asys.current_process ) && ( len != 0 ))
 	{

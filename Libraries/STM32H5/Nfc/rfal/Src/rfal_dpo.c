@@ -25,7 +25,9 @@
  */
 #include "rfal_dpoTbl.h"
 #include "rfal_dpo.h"
-#include "platform.h"
+#include "../../platform.h"
+#include "st_errno.h"
+
 #include "rfal_rf.h"
 #include "rfal_chip.h"
 #include "rfal_analogConfig.h"

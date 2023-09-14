@@ -25,8 +25,9 @@
 #include "st25r3916.h"
 #include "st25r3916_com.h"
 #include "st25r3916_led.h"
+#include "../../platform.h"
 #include "st_errno.h"
-#include "platform.h"
+
 #include "utils.h"
 
 

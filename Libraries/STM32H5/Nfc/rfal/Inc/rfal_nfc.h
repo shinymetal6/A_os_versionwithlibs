@@ -25,8 +25,9 @@
 * INCLUDES
 ******************************************************************************
 */
-#include "platform.h"
+#include "../../platform.h"
 #include "st_errno.h"
+
 #include "rfal_rf.h"
 #include "rfal_nfca.h"
 #include "rfal_nfcb.h"
@@ -77,7 +78,7 @@
 
 /*! Sets the discover parameters to its default values */
 #define rfalNfcDefaultDiscParams( dp )  if( (dp) != NULL) {                                                               \
-                                        ST_MEMSET( (dp), 0x00, sizeof(rfalNfcDiscoverParam) );                            \
+                                        memset( (dp), 0x00, sizeof(rfalNfcDiscoverParam) );                            \
                                         ((rfalNfcDiscoverParam*)(dp))->compMode               = RFAL_COMPLIANCE_MODE_NFC; \
                                         ((rfalNfcDiscoverParam*)(dp))->devLimit               = 1U;                       \
                                         ((rfalNfcDiscoverParam*)(dp))->nfcfBR                 = RFAL_BR_212;              \

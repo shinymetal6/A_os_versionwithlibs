@@ -10,10 +10,12 @@
 #include "Platform_STM32H5xx.h"
 #include <string.h>
 
+/*
 void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
 {
 	st25r3916Isr();
 }
+*/
 /*
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {

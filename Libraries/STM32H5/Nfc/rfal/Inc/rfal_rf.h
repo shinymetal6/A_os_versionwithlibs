@@ -25,8 +25,9 @@
 * INCLUDES
 ******************************************************************************
 */
-#include "platform.h"
+#include "../../platform.h"
 #include "st_errno.h"
+
 #include "rfal_features.h"
 
 /*

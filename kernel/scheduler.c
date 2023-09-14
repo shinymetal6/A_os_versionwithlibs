@@ -104,6 +104,13 @@ uint32_t wake;
 	return wake;
 }
 
+void __attribute__ ((noinline)) suspend(void)
+{
+	__disable_irq();
+	process[Asys.current_process].current_state = PROCESS_WAITING_STATE;
+	schedule();
+	__enable_irq();
+}
 
 uint32_t inline activate_process(uint8_t dest_process,uint32_t rsn , uint32_t flags)
 {

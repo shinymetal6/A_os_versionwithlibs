@@ -19,7 +19,7 @@ extern	UART_HandleTypeDef		huart3;
 extern	SPI_HandleTypeDef		hspi1;
 #define	ST25R3915_SPI			hspi1
 extern	TIM_HandleTypeDef		htim6;
-extern	PCD_HandleTypeDef		hpcd_USB_DRD_FS;
+//extern	PCD_HandleTypeDef		hpcd_USB_DRD_FS;
 
 #define BSP_ERROR_NONE                     0
 #define BSP_ERROR_NO_INIT                 -1
@@ -51,6 +51,6 @@ extern	void 	BSP_Error_Handler(char * file, int line);
 
  */
 
-
+#define	ST25R3916B	1
 
 #endif /* BSP_PLATFORM_STM32H5XX_PLATFORM_STM32H5XX_H_ */

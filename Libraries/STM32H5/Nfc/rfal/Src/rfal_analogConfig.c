@@ -24,8 +24,9 @@
  */
 #include "rfal_analogConfig.h"
 #include "rfal_chip.h"
+#include "../../platform.h"
 #include "st_errno.h"
-#include "platform.h"
+
 #include "utils.h"
 
 

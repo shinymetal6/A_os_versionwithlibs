@@ -14,6 +14,7 @@ typedef struct
 {
 	uint32_t 	psp_value;
 	uint32_t 	block_count;
+	uint32_t	delay_value;
 	uint8_t  	current_state;
 	uint32_t	wait_event;
 	uint8_t		*mbx[MAILBOX_NUM];

@@ -20,8 +20,9 @@
 #ifndef ST25R3916_AAT_H
 #define ST25R3916_AAT_H
 
-#include "platform.h"
+#include "../../platform.h"
 #include "st_errno.h"
+
 
 /*
 ******************************************************************************

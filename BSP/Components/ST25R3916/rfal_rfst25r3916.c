@@ -1620,8 +1620,8 @@ void rfalWorker( void )
     switch( gRFAL.state )
     {
         case RFAL_STATE_TXRX:
-            rfalRunTransceiveWorker();
-            break;
+			rfalRunTransceiveWorker();
+			break;
             
     #if RFAL_FEATURE_LISTEN_MODE
         case RFAL_STATE_LM:
@@ -1643,6 +1643,7 @@ void rfalWorker( void )
     
     platformUnprotectWorker();             /* Unprotect RFAL Worker/Task/Process */
 }
+
 
 
 /*******************************************************************************/

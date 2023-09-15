@@ -13,6 +13,8 @@
 #include "../hwmanager.h"
 #include "../systems.h"
 
+#if defined NFC
+
 extern	void st25r3916Isr( void );
 
 void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
@@ -20,3 +22,4 @@ void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
 	if ( GPIO_Pin == ST25R391X_INT_Pin)
 		st25r3916Isr();
 }
+#endif

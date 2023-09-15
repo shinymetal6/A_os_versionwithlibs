@@ -82,6 +82,11 @@ typedef struct
 
 typedef struct
 {
+	int32_t		(*svc_func)(int32_t,int32_t,int32_t,int32_t);
+}SVCfunc_t;
+
+typedef struct
+{
 	uint8_t		IP_ADDR0;
 	uint8_t		IP_ADDR1;
 	uint8_t		IP_ADDR2;

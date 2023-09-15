@@ -313,7 +313,7 @@ void rfalNfcWorker( void )
     ReturnCode err;
    
     rfalWorker();                                                                     /* Execute RFAL process  */
-    
+
     switch( gNfcDev.state )
     {   
         /*******************************************************************************/

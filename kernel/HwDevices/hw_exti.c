@@ -13,7 +13,7 @@
 #include "../hwmanager.h"
 #include "../systems.h"
 
-#if defined NFC
+#if defined NFC_ENABLED
 
 extern	void st25r3916Isr( void );
 

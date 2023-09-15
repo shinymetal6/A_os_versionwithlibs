@@ -66,8 +66,8 @@
 //#define	USBDEV_ENABLED			1
 //#define	USBDEV_IS_FS			1
 //#define	USBHOST_ENABLED			1
-#define	NFC		1
-#if defined NFC
+#define	NFC_ENABLED		1
+#if defined NFC_ENABLED
 #define ST25R3916B
 #endif
 
